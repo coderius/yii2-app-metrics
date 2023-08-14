@@ -17,7 +17,40 @@
         "php": ">=5.6.0",
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "yiisoft/yii2-httpclient": "^2.0",
+        "himiklab/yii2-recaptcha-widget": "*",
+        "skeeks/yii2-mobile-detect": "^1.0",
+        "yii2mod/yii2-rbac": "*",
+        "pragmarx/google2fa": "^8.0",
+        "vova07/yii2-imperavi-widget": "*",
+        "yiisoft/yii2-bootstrap4": "^2.0",
+        "yiisoft/yii2-imagine": "^2.2",
+        "dmstr/yii2-adminlte-asset": "^2.6",
+        "kartik-v/yii2-widget-datepicker": "^1.4",
+        "kartik-v/yii2-widget-fileinput": "^1.0",
+        "kartik-v/yii2-icons": "^1.4",
+        "pragmarx/google2fa-qrcode": "^1.0",
+        "cbschuld/browser.php": "^1.9",
+        "kartik-v/yii2-export": "^1.4",
+        "kartik-v/yii2-widget-typeahead": "^1.0",
+        "wbraganca/yii2-dynamicform": "dev-master",
+        "kartik-v/yii2-widget-depdrop": "^1.0",
+        "ext-json": "*",
+        "ext-curl": "*",
+        "kartik-v/yii2-widget-timepicker": "*",
+        "kartik-v/yii2-date-range": "dev-master",
+        "aki/yii2-bot-telegram": "*",
+        "borales/yii2-phone-input": "*",
+        "moonlandsoft/yii2-phpexcel": "*",
+        "kartik-v/yii2-popover-x": "dev-master",
+        "google/apiclient": "^2.0",
+        "cetver/yii2-language-selector": "^1.0",
+        "codemix/yii2-localeurls": "^1.7",
+        "bupy7/yii2-widget-cropbox": "^5.1",
+        "kartik-v/yii2-bootstrap4-dropdown": "@dev",
+        "kartik-v/yii2-mpdf": "^1.0",
+        "coderius/yii2-geo-ip": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -44,5 +77,11 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ]
+    ],
+    "extra": {
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
+    }
 }
