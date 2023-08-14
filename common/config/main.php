@@ -12,15 +12,8 @@ return [
     'timeZone' => 'Europe/Kiev',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
         'myRequest' => [
             'class' => 'common\components\web\Request', //мой компонент
-        ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-            'defaultRoles' => ['guest'],
         ],
         'user' => [
             'class' => 'yii\web\User',
@@ -30,40 +23,24 @@ return [
                 'name' => '_identity-user',
                 'httpOnly' => true],
         ],
+        'authManager' => [
+            'class'        => 'yii\rbac\DbManager',
+            'defaultRoles' => [ 'guest', 'user' ],
+        ],
+        'cache'       => [
+            'class' => 'yii\caching\FileCache',
+        ],
         // перевод
-        'i18n' => [
+        'i18n'        => [
             'translations' => [
-                'blog*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@common/translations',
-                    //'sourceLanguage' => 'en-US',
-                    'forceTranslation' => true,
-                    'fileMap' => [
-                        'blog-main' => 'blog.php',
-                    ],
+                '*'            => [
+                    'class'          => 'yii\i18n\PhpMessageSource',
+                    'basePath'       => '@common/messages', // if advanced application, set @frontend/messages
+                    'sourceLanguage' => 'ru-RU',
                 ],
-
-                'app*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@common/translations',
-                    //'sourceLanguage' => 'en-US',
-                    'forceTranslation' => true,
-                    'fileMap' => [
-                        'app' => 'app.php',
-                        'app/error' => 'error.php',
-                        'app/admin' => 'admin.php',
-                    ],
-                ],
-                'auth*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@common/translations',
-                    //'sourceLanguage' => 'en-US',
-                    'forceTranslation' => true,
-                    'fileMap' => [
-                        'auth' => 'auth.php',
-                        'auth/error' => 'error.php',
-                        'auth/admin' => 'admin.php',
-                    ],
+                'yii2mod.rbac' => [
+                    'class'    => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@yii2mod/rbac/messages',
                 ],
             ],
         ],
@@ -71,13 +48,20 @@ return [
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
             'locale' => 'ru-RU', //язык русский
-            'defaultTimeZone' => 'UTC', //точка отсчета
-            'timeZone' => 'Europe/Kiev',
+            // 'defaultTimeZone' => 'UTC', //точка отсчета
+            'defaultTimeZone'   => 'Europe/Kiev',
+            'timeZone'          => 'Europe/Kiev',
 //            'timeZone' => Yii::$app->user->isGuest ? 'UTC' : Yii::$app->user->identity->timezone,
 
             //'dateFormat' => 'd MMMM yyyy',//как месяц
-            'dateFormat' => 'dd.MM.yyyy', // как число
+            'dateFormat' => 'dd.MM.yyyy', // как число'decimalSeparator'  => '.',
+            'thousandSeparator' => '',
+            'currencyCode'      => 'USD',
+
         ],
+
+        'geoip'       => [ 'class' => 'coderius\geoIp\GeoIP' ],
+        
 
         //для ссылок в админки во фронт и на оборот
         'urlManagerFrontend' => require(dirname(dirname(__DIR__)).'/frontend/config/urlmanager.php'),
