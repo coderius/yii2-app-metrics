@@ -28,18 +28,17 @@ use common\components\rbac\Rbac;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const SIGNUP_TYPE_SIGNUPFORM  = 1;
-    const SIGNUP_TYPE_SOCIALLOGIN = 2;
-
-    const AUTH_TYPE_LOGINFORM  = 1;
-    const AUTH_TYPE_SOCIALLOGIN = 2;
+    const ROLE_METRIC_CLIENT = 'ROLE_METRIC_CLIENT';
+    const ROLE_METRIC_ADMIN  = 'ROLE_METRIC_ADMIN';
+    const ROLE_METRIC_OWNER  = 'ROLE_METRIC_OWNER';
+    const ROLE_METRIC_DEVELOPER     = 'ROLE_DEVELOPER';
+    const ROLE_METRIC_WEBMASTER     = 'ROLE_WEBMASTER';
     
     const STATUS_BLOCKED = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_WAIT = 2;
     
-    const GROUP_USER = 'user';
-    const GROUP_ADMIN = 'admin';
+   
 
     /**
      * @inheritdoc
@@ -237,8 +236,19 @@ class User extends ActiveRecord implements IdentityInterface
         if (\Yii::$app->user->isGuest){
             return true;
         }else{
-            return (\Yii::$app->user->can(Rbac::ROLE_ADMIN) == false);
+            // return (\Yii::$app->user->can(Rbac::ROLE_METRIC_ADMIN) == false);
+            return (\Yii::$app->user->can(self::ROLE_METRIC_ADMIN) == false); // TODO set roles constants to RBAC
         }
+    }
+
+    /**
+     * Gets query for [[UserLog]].
+     *
+     * @return ActiveQuery
+     */
+    public function getUserLogs(): ActiveQuery
+    {
+        return $this->hasMany( UserLog::class, [ 'id_user' => 'id' ] );
     }
     
 }
