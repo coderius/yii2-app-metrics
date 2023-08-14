@@ -28,11 +28,13 @@ use common\components\rbac\Rbac;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const ROLE_METRIC_CLIENT = 'ROLE_METRIC_CLIENT';
-    const ROLE_METRIC_ADMIN  = 'ROLE_METRIC_ADMIN';
-    const ROLE_METRIC_OWNER  = 'ROLE_METRIC_OWNER';
-    const ROLE_METRIC_DEVELOPER     = 'ROLE_DEVELOPER';
-    const ROLE_METRIC_WEBMASTER     = 'ROLE_WEBMASTER';
+    const ROLE_METRIC_CLIENT     = 'ROLE_METRIC_CLIENT';
+    const ROLE_METRIC_ADMIN      = 'ROLE_METRIC_ADMIN';
+    const ROLE_METRIC_OWNER      = 'ROLE_METRIC_OWNER';
+    const ROLE_METRIC_DEVELOPER  = 'ROLE_DEVELOPER';
+    const ROLE_METRIC_WEBMASTER  = 'ROLE_WEBMASTER';
+    const ROLE_METRIC_VISITOR    = 'ROLE_METRIC_VISITOR';
+    
     
     const STATUS_BLOCKED = 0;
     const STATUS_ACTIVE = 1;

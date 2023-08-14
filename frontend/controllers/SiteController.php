@@ -51,7 +51,14 @@ class SiteController extends Controller
                     [
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['metric-admin', 'metric-owner'],
+                        'roles' => [
+                            'ROLE_METRIC_CLIENT',
+                            'ROLE_METRIC_ADMIN',
+                            'ROLE_METRIC_OWNER',
+                            'ROLE_METRIC_DEVELOPER',
+                            'ROLE_METRIC_WEBMASTER',
+                            'ROLE_METRIC_VISITOR',
+                        ],
                     ],
                     [
                         'actions' => ['forbidden'],
