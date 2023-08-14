@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use PhpParser\Node\Stmt\TryCatch;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
@@ -74,6 +75,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        try{
+            throw new \Exception;
+        }catch(\Exception $e){ 
+            var_dump($e->getTraceAsString());
+        }
         return $this->render('index');
     }
 
