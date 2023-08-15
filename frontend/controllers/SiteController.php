@@ -1,10 +1,13 @@
 <?php
 namespace frontend\controllers;
 
+use Yii;
+use yii\helpers\Url;
+use yii\web\Response;
+use common\models\user\User;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use PhpParser\Node\Stmt\TryCatch;
-use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -15,12 +18,18 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use backend\helpers\WhitelistHelper;
+use common\helpers\UserBanHelper;
+use DateTime;
+use DateTimeZone;
+use Exception;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -28,28 +37,68 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['login', 'error', 'request-password-reset', 'reset-password', 'banned-user', 'verify-email', 'email-confirmed', 'success-registration', 'change-theme', 'update-pp-stata-by-buyers'],
                         'allow' => true,
-                        'roles' => ['?'],
                     ],
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => [
+                            'ROLE_METRIC_CLIENT',
+                            'ROLE_METRIC_ADMIN',
+                            'ROLE_METRIC_OWNER',
+                            'ROLE_METRIC_DEVELOPER',
+                            'ROLE_METRIC_WEBMASTER',
+                            'ROLE_METRIC_VISITOR',
+                        ],
+                    ],
+                    [
+                        'actions' => ['forbidden'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
             ],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeAction($action)
+    {
+        if (!in_array($action->id, ['logout', 'banned-user'])) {
+            if (UserBanHelper::checkUser()) {
+                $this->redirect(['/site/banned-user']);
+                Yii::$app->end();
+            }
+        }
+
+        if (!in_array($action->id, ['logout', 'login', 'forbidden'])) {
+            if (!WhitelistHelper::isCurrentIpPermitted()) {
+                return $this->redirect(['/site/forbidden']);
+            }
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -71,16 +120,40 @@ class SiteController extends Controller
     /**
      * Displays homepage.
      *
-     * @return mixed
+     * @return Response|string
+     * @throws Exception
      */
     public function actionIndex()
     {
-        try{
-            throw new \Exception;
-        }catch(\Exception $e){ 
-            var_dump($e->getTraceAsString());
+        // 'metric-admin', 'metric-owner'
+        $roles = [
+            User::ROLE_METRIC_CLIENT => Url::toRoute(['dashboard/index']), // TODO in development
+            User::ROLE_METRIC_ADMIN => Url::toRoute(['dashboard/admin-index']),// TODO in development
+            User::ROLE_METRIC_OWNER => Url::toRoute(['dashboard/own-index']),// TODO in development
+        ];
+
+        if (isset($roles[Yii::$app->params['userRole']])) {
+            return $this->redirect($roles[Yii::$app->params['userRole']]);
         }
-        return $this->render('index');
+
+        $dateToday = (new DateTime('NOW', new DateTimeZone(Yii::$app->params['timezoneOffset'])))->format('Y-m-d');
+
+        return $this->render('index', [
+            'dateFrom' => $dateToday,
+            'dateTo' => $dateToday,
+            'isCreator' => in_array(Yii::$app->params['userRole'], [User::ROLE_METRIC_DEVELOPER, User::ROLE_METRIC_WEBMASTER]),
+        ]);
+    }
+
+    /**
+     * Forbidden page
+     * @return string
+     */
+    public function actionForbidden()
+    {
+        $this->layout = '/login';
+
+        return $this->render('forbidden');
     }
 
     /**
