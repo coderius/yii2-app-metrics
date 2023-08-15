@@ -98,7 +98,6 @@ class SiteController extends Controller
             }
         }
 
-
         return parent::beforeAction($action);
     }
 
@@ -128,9 +127,9 @@ class SiteController extends Controller
     {
         // 'metric-admin', 'metric-owner'
         $roles = [
-            User::ROLE_METRIC_CLIENT => Url::toRoute(['dashboard/index']),
-            User::ROLE_METRIC_ADMIN => Url::toRoute(['dashboard/admin-index']),
-            User::ROLE_METRIC_OWNER => Url::toRoute(['dashboard/own-index']),
+            User::ROLE_METRIC_CLIENT => Url::toRoute(['dashboard/index']), // TODO in development
+            User::ROLE_METRIC_ADMIN => Url::toRoute(['dashboard/admin-index']),// TODO in development
+            User::ROLE_METRIC_OWNER => Url::toRoute(['dashboard/own-index']),// TODO in development
         ];
 
         if (isset($roles[Yii::$app->params['userRole']])) {
