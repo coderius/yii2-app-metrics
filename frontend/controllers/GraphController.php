@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\controllers\base\BaseProtectedController;
-use backend\helpers\GraphHelper;
+use frontend\helpers\GraphHelper;
 use common\helpers\UserBanHelper;
 use common\models\TeamleadMarkers;
 use common\models\user\User;
